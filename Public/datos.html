@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos no válidos</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+      // Cuando la página se cargue, realizamos la solicitud a la ruta '/datos-no-validos'
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("/datos-no-validos")
+          .then(response => response.json())
+          .then(data => {
+            // Renderizamos los datos en el HTML
+            renderData(data);
+          })
+          .catch(error => console.error("Error al obtener los datos:", error));
+      });
+
+      // Función para renderizar los datos en el HTML
+      function renderData(data) {
+        // Procesar las provincias
+        const provinciaSelector = document.getElementById("provincia");
+        data.provincias.forEach((provincia) => {
+          const option = document.createElement("option");
+          option.value = provincia.nombre;
+          option.innerHTML = provincia.nombre;
+          provinciaSelector.appendChild(option);
+        });
+
+        // Procesar los votos especiales
+        const votosList = document.getElementById("votosEspecialesList");
+        data.votosEspecialesError.forEach((voto) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = voto.descripcion;
+          votosList.appendChild(listItem);
+        });
+
+        // Procesar las actas
+        const actasList = document.getElementById("actasDetalladasList");
+        data.actasDetalladas.forEach((acta) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = acta.descripcion;
+          actasList.appendChild(listItem);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Datos no válidos</h1>
+    <form action="/datos-no-validos" method="get">
+      <label for="provincia">Provincia:</label>
+      <select name="provincia" id="provincia">
+        <option value="">Selecciona una provincia</option>
+      </select>
+
+      <label for="canton">Cantón:</label>
+      <select name="canton" id="canton">
+        <option value="">Selecciona un cantón</option>
+      </select>
+
+      <button type="submit">Filtrar</button>
+    </form>
+
+    <h2>Votos Especiales con Errores</h2>
+    <ul id="votosEspecialesList"></ul>
+
+    <h2>Actas Detalladas</h2>
+    <ul id="actasDetalladasList"></ul>
+
+    <p><a href="/">Volver al inicio</a></p>
+  </body>
+</html>
