@@ -726,7 +726,6 @@ app.get("/logout", (req, res) => {
 });
 
 // Iniciar el servidor en la IP local y el puerto deseado
-const ipAddress = '192.168.1.45';  // Tu IP local
-app.listen(port, ipAddress, () => {
-  console.log(`Servidor en ejecución en http://${ipAddress}:${port}`);
+app.listen(port, () => {
+  console.log(`Servidor en ejecución`);
 });
